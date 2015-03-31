@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorTemplatingSample.Web",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorTemplatingSample.Console", "RazorTemplatingSample.Console\RazorTemplatingSample.Console.csproj", "{629D30EB-8A86-4431-B711-6EF5FCF8CF9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorTemplatingSample.Web.3rdParty", "RazorTemplatingSample.Web.3rdParty\RazorTemplatingSample.Web.3rdParty.csproj", "{92228E11-42AE-408F-806F-E21C19645B92}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{629D30EB-8A86-4431-B711-6EF5FCF8CF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{629D30EB-8A86-4431-B711-6EF5FCF8CF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{629D30EB-8A86-4431-B711-6EF5FCF8CF9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92228E11-42AE-408F-806F-E21C19645B92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92228E11-42AE-408F-806F-E21C19645B92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92228E11-42AE-408F-806F-E21C19645B92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92228E11-42AE-408F-806F-E21C19645B92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
