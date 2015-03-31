@@ -15,7 +15,7 @@ namespace RazorOnConsole
             var basePath = Path.GetDirectoryName(viewPath);
             var fileName = Path.GetFileName(viewPath);
             var fileNameNoExtension = Path.GetFileNameWithoutExtension(fileName);
-            using (var file = File.Create(fileNameNoExtension + ".html")) { new Index("foobarfoo").ExecuteAsync(file).Wait(); }
+            using (var file = File.Create(fileNameNoExtension + ".html")) { new Index { Model = "foobarfoo" }.ExecuteAsync(file).Wait(); }
 
             var codeLang = new CSharpRazorCodeLanguage();
             var host = new RazorEngineHost(codeLang)

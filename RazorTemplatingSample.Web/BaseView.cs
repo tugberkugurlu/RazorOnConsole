@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RazorOnConsole.Views
+namespace RazorTemplatingSample.Web
 {
     public abstract class BaseView<TModel> : BaseView
     {
@@ -21,12 +21,9 @@ namespace RazorOnConsole.Views
         /// </summary>
         protected StreamWriter Output { get; private set; }
 
-        public dynamic Model { get; set; }
-
         /// <summary>
         /// Execute an individual request
         /// </summary>
-        /// <param name="context"></param>
         public async Task ExecuteAsync(Stream stream)
         {
             Output = new StreamWriter(stream);
@@ -35,7 +32,7 @@ namespace RazorOnConsole.Views
         }
 
         /// <summary>
-        /// Execute an individual request. Razor host overrides this.
+        /// Execute an individual request
         /// </summary>
         public virtual Task ExecuteAsync()
         {
