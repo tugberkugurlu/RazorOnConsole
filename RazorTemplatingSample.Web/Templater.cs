@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Razor;
 using Microsoft.AspNet.Razor.Generator;
 using Microsoft.CodeAnalysis;
@@ -12,22 +14,46 @@ namespace RazorTemplatingSample.Web
 {
     public static class Templater
     {
-        public static string Run()
-        {
-            var syntaxTree = CSharpSyntaxTree.ParseText(@"
- // ADDED THE FOLLOWING LINE
-using System;
-using RazorTemplatingSample.Web;
+        private const string RootNamespace = "RazorOnConsole";
+        private const string MainClassNamePrefix = "ASPV_";
 
-class Greeter
-{
-    public void Greet()
-    {
-        var person = new Person { Name = ""foo"" };
-        Console.WriteLine(""Hello, World"" + person.Name);
-    }
-}");
+        public static string Run(IEnumerable<Person> people)
+        {
+            if (people == null)
+            {
+                throw new ArgumentNullException("people");
+            }
+
+            const string className = RootNamespace + "." + MainClassNamePrefix + "Index";
             var razorGeneratedCode = GetRazorSyntaxTree();
+            Assembly assembly = Compile(razorGeneratedCode);
+
+            return GenerateHtml(assembly, className, people);
+        }
+
+        private static string GenerateHtml(Assembly assembly, string className, IEnumerable<Person> model)
+        {
+            Type type = assembly.GetType(className);
+            var modelProperty = type.GetProperty("Model");
+            object obj = Activator.CreateInstance(type);
+            modelProperty.SetValue(obj, model);
+
+            using (var ms = new MemoryStream())
+            using (var reader = new StreamReader(ms))
+            {
+                var task = (Task)type.GetTypeInfo().GetMethods()
+                    .First(dm => dm.Name == "ExecuteAsync" && dm.GetParameters().Any())
+                    .Invoke(obj, new object[] {ms});
+
+                task.Wait();
+
+                ms.Seek(0, SeekOrigin.Begin);
+                return reader.ReadToEnd();
+            }
+        }
+
+        private static Assembly Compile(string razorGeneratedCode)
+        {
             var razorSyntaxTree = CSharpSyntaxTree.ParseText(razorGeneratedCode);
             var assemblyName = Path.GetRandomFileName();
             var references = new MetadataReference[]
@@ -41,7 +67,7 @@ class Greeter
                 assemblyName,
                 syntaxTrees: new[] { razorSyntaxTree },
                 references: references,
-                options:  new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+                options: new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
 
             using (var ms = new MemoryStream())
             {
@@ -54,30 +80,16 @@ class Greeter
                 }
 
                 ms.Seek(0, SeekOrigin.Begin);
-                Assembly assembly = Assembly.Load(ms.ToArray());
-
-                //Type type = assembly.GetType("Greeter");
-                //var obj = Activator.CreateInstance(type);
-                //type.InvokeMember("Greet",
-                //    BindingFlags.Default | BindingFlags.InvokeMethod,
-                //    null,
-                //    obj,
-                //    null);
-
-                Type[] types = assembly.GetTypes();
+                return Assembly.Load(ms.ToArray());
             }
-
-            return string.Empty;
         }
 
         private static string GetRazorSyntaxTree()
         {
-            const string rootNamespace = "RazorOnConsole";
-            const string mainClassNamePrefix = "ASPV_";
             var viewPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Index.cshtml");
             var fileName = Path.GetFileName(viewPath);
             var fileNameNoExtension = Path.GetFileNameWithoutExtension(fileName);
-            var className = mainClassNamePrefix + fileNameNoExtension;
+            var className = MainClassNamePrefix + fileNameNoExtension;
 
             var codeLang = new CSharpRazorCodeLanguage();
             var host = new RazorEngineHost(codeLang)
@@ -103,7 +115,7 @@ class Greeter
                 GeneratorResults code = engine.GenerateCode(
                     input: fileStream,
                     className: className,
-                    rootNamespace: rootNamespace,
+                    rootNamespace: RootNamespace,
                     sourceFileName: fileName);
 
                 return code.GeneratedCode;

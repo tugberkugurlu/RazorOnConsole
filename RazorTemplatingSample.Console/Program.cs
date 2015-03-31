@@ -6,7 +6,13 @@ namespace RazorTemplatingSample.Console
     {
         static void Main(string[] args)
         {
-            Templater.Run();
+            Person[] model = new[]
+            {
+                new Person { Name = "foo" },
+                new Person { Name = "bar" }
+            };
+
+            System.Console.WriteLine(Templater.Run(model));
             System.Console.ReadLine();
         }
     }

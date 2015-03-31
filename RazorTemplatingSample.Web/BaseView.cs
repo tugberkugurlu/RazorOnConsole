@@ -21,8 +21,6 @@ namespace RazorTemplatingSample.Web
         /// </summary>
         protected StreamWriter Output { get; private set; }
 
-        public dynamic Model { get; set; }
-
         /// <summary>
         /// Execute an individual request
         /// </summary>
