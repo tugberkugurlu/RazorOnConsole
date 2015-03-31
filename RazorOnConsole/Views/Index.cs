@@ -1,6 +1,6 @@
 namespace RazorOnConsole
 {
-#line 1 "Index.cshtml"
+#line 2 "Index.cshtml"
 using System.Linq
 
 #line default
@@ -9,19 +9,8 @@ using System.Linq
     using System;
     using System.Threading.Tasks;
 
-    public class Index : RazorOnConsole.Views.BaseView
+    public class Index : RazorOnConsole.Views.BaseView<string>
     {
-#line 9 "Index.cshtml"
-
-    public Index(string model)
-    {
-        Model = model;
-    }
-
-    public string Model { get; set; }
-
-#line default
-#line hidden
         #line hidden
         public Index()
         {
@@ -31,7 +20,7 @@ using System.Linq
         public override async Task ExecuteAsync()
         {
             WriteLiteral("\r\n");
-#line 3 "Index.cshtml"
+#line 4 "Index.cshtml"
   
     var foo = "bar" + "foo";
     var link = "http://tugberkugurlu.com";
@@ -39,18 +28,17 @@ using System.Linq
 #line default
 #line hidden
 
-            WriteLiteral("\r\n\r\n");
-            WriteLiteral("\r\n<a");
-            WriteAttribute("href", Tuple.Create(" href=\"", 238), Tuple.Create("\"", 250), 
-            Tuple.Create(Tuple.Create("", 245), Tuple.Create<System.Object, System.Int32>(link, 245), false));
+            WriteLiteral("\r\n\r\n<a");
+            WriteAttribute("href", Tuple.Create(" href=\"", 156), Tuple.Create("\"", 168), 
+            Tuple.Create(Tuple.Create("", 163), Tuple.Create<System.Object, System.Int32>(link, 163), false));
             WriteLiteral(">");
-#line 18 "Index.cshtml"
+#line 9 "Index.cshtml"
            Write(foo);
 
 #line default
 #line hidden
             WriteLiteral("</a>\r\n\r\n");
-#line 20 "Index.cshtml"
+#line 11 "Index.cshtml"
  foreach (var i in Enumerable.Range(0, 10))
 {
 
@@ -58,26 +46,26 @@ using System.Linq
 #line hidden
 
             WriteLiteral("     <a href=\"#");
-#line 22 "Index.cshtml"
+#line 13 "Index.cshtml"
              Write(i);
 
 #line default
 #line hidden
             WriteLiteral("\">");
-#line 22 "Index.cshtml"
+#line 13 "Index.cshtml"
                    Write(i);
 
 #line default
 #line hidden
             WriteLiteral("</a>\r\n");
-#line 23 "Index.cshtml"
+#line 14 "Index.cshtml"
 }
 
 #line default
 #line hidden
 
             WriteLiteral("\r\n<p>This is model: ");
-#line 25 "Index.cshtml"
+#line 16 "Index.cshtml"
              Write(Model);
 
 #line default

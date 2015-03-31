@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace RazorOnConsole.Views
 {
+    public abstract class BaseView<TModel> : BaseView
+    {
+        public new TModel Model { get; set; }
+    }
+
     /// <summary>
     /// Infrastructure
     /// </summary>
@@ -15,6 +20,8 @@ namespace RazorOnConsole.Views
         /// The output stream
         /// </summary>
         protected StreamWriter Output { get; private set; }
+
+        public dynamic Model { get; set; }
 
         /// <summary>
         /// Execute an individual request
@@ -28,9 +35,12 @@ namespace RazorOnConsole.Views
         }
 
         /// <summary>
-        /// Execute an individual request
+        /// Execute an individual request. Razor host overrides this.
         /// </summary>
-        public abstract Task ExecuteAsync();
+        public virtual Task ExecuteAsync()
+        {
+            return Task.FromResult(0);
+        }
 
         /// <summary>
         /// Write the given value directly to the output
